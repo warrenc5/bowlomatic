@@ -11,7 +11,8 @@ import java.util.Deque;
 import java.util.List;
 
 /**
- *
+ * Simulate a bowling machine score counter.
+ * 
  * @author Warren Crossing
  */
 public class BowlomaticApp {
@@ -70,8 +71,9 @@ public class BowlomaticApp {
         }
 
         /**
-         * Read all the frames and keep a running total
-         * @return 
+         * Go through all the frames and keep a running total
+         * 
+         * @return the running total
          */
         private int readFrames() {
             int runningTotal = 0;
@@ -90,6 +92,11 @@ public class BowlomaticApp {
             return runningTotal;
         }
 
+        /**
+         * Look at the number of pins from the next ball, creating a frame if necessary.
+         * 
+         * @param state whether to look forward for bonus or just add the pins to the frame.
+         */
         private void readNextBall(State state) {
 
             if (deque.peekFirst() == null) {
@@ -121,6 +128,9 @@ public class BowlomaticApp {
             }
         }
 
+        /**
+         * End and make a record of the current frame.
+         */
         private void resetFrame() {
             if (currentFrame != null) {
                 frames.addLast(currentFrame);
@@ -129,6 +139,9 @@ public class BowlomaticApp {
             currentFrame = new Frame();
         }
 
+        /**
+         * Don't count scores after 10 frames.
+         */
         private boolean fillBall() {
             return frames.size() >= FILL_BALL;
         }
@@ -165,6 +178,10 @@ public class BowlomaticApp {
             return ball1 + ball2 + bonus;
         }
 
+        /**
+         * Is this frame either a strike or has two balls.
+         * @return 
+         */
         private boolean isCompleted() {
             return bowls == 2 || (bowls == 1 && ball1 == TEN);
         }
@@ -173,10 +190,16 @@ public class BowlomaticApp {
             this.bonus += bonus;
         }
 
+        /**
+         * @return whether the frame is a strike 
+         */
         private boolean isStrike() {
             return ball1 == TEN;
         }
 
+        /**
+         * @return whether the frame is a spare 
+         */
         private boolean isSpare() {
             return ball1 != TEN && (ball1 + ball2 == TEN);
         }
