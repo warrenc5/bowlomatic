@@ -16,16 +16,34 @@ import java.util.List;
  */
 public class BowlomaticApp {
 
-    public Integer calculateScore(String balls) {
-        return this.calculateScore(convertRolls(balls));
+    public static void main(String[] args) {
+        new BowlomaticApp().calculateScore(args);
     }
 
-    private Deque convertRolls(String rolls) {
+    private void calculateScore(String[] balls) {
+        new BowlomaticApp().calculateScore(balls);
+    }
+
+    public Integer calculateScore(String balls) {
+        return this.calculateScore(BowlomaticApp.this.createQueue(balls));
+    }
+
+    /**
+     * Take the input data and produce the queue of Integers.
+     *
+     * @param rolls
+     * @return
+     */
+    private Deque createQueue(String rolls) {
         String[] split = rolls.split(" ");
         System.out.println(Arrays.asList(split).toString());
-        List<Integer> intRolls = new ArrayList<Integer>(split.length);
+        return createQueue(split);
+    }
 
-        for (String pins : split) {
+    private Deque createQueue(String[] rolls) {
+        List<Integer> intRolls = new ArrayList<Integer>(rolls.length);
+
+        for (String pins : rolls) {
             intRolls.add(Integer.valueOf(pins));
         }
 
@@ -51,21 +69,25 @@ public class BowlomaticApp {
             frames = new ArrayDeque<Frame>();
         }
 
+        /**
+         * Read all the frames and keep a running total
+         * @return 
+         */
         private int readFrames() {
-            int total = 0;
+            int runningTotal = 0;
             resetFrame();
 
             while (!deque.isEmpty()) {
                 readNextBall(START);
                 if (currentFrame.isCompleted()) {
-                    total += currentFrame.calculateFrameTotal();
-                    System.out.println("frame: "+ (frames.size() +1) + " " + currentFrame + " => " + total);
+                    runningTotal += currentFrame.calculateFrameTotal();
+                    System.out.println("frame: " + (frames.size() + 1) + " " + currentFrame + " => " + runningTotal);
                     resetFrame();
                 }
             }
 
-            System.out.println("==" + total);
-            return total;
+            System.out.println("==" + runningTotal);
+            return runningTotal;
         }
 
         private void readNextBall(State state) {
